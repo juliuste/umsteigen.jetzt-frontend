@@ -1,6 +1,6 @@
 # umsteigen.jetzt-frontend
 
-Built at DB Hackathon. This is the worst code I've ever written. Pls don't judge me and give me a few days to fix this disgrace.
+Built at [DB Hackathon](https://www.mindboxberlin.com/index.php/db-hackathon-may-2017.html). This is the worst code I've ever written. Pls don't judge me and give me a few days to fix this disgrace.
 
 [![npm version](https://img.shields.io/npm/v/umsteigen.jetzt-frontend.svg)](https://www.npmjs.com/package/umsteigen.jetzt-frontend)
 [![Build Status](https://travis-ci.org/juliuste/umsteigen.jetzt-frontend.svg?branch=master)](https://travis-ci.org/juliuste/umsteigen.jetzt-frontend)
