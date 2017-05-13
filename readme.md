@@ -8,6 +8,10 @@ Built at DB Hackathon. This is the worst code I've ever written. Pls don't judge
 [![dev dependency status](https://img.shields.io/david/dev/juliuste/umsteigen.jetzt-frontend.svg)](https://david-dm.org/juliuste/umsteigen.jetzt-frontend#info=devDependencies)
 [![license](https://img.shields.io/github/license/juliuste/umsteigen.jetzt-frontend.svg?style=flat)](LICENSE)
 
+## See also
+
+- [umsteigen.jetzt-rest](https://github.com/juliuste/umsteigen.jetzt-rest)
+
 ## Contributing
 
 If you found a bug, want to propose a feature or feel the urge to complain about your life, feel free to visit [the issues page](https://github.com/juliuste/umsteigen.jetzt-frontend/issues).
