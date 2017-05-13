@@ -1,0 +1,32 @@
+{
+  "name": "umsteigen.jetzt-frontend",
+  "description": "",
+  "version": "0.0.0",
+  "keywords": [],
+  "author": "Julius Tens <mail@juliustens.de>",
+  "homepage": "https://github.com/juliuste/umsteigen.jetzt-frontend",
+  "repository": "juliuste/umsteigen.jetzt-frontend",
+  "bugs": "https://github.com/juliuste/umsteigen.jetzt-frontend/issues",
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "dependencies": {
+    "browserify": "^14.3.0",
+    "clone": "^2.1.1",
+    "horsey": "^3.0.0",
+    "hyperscript": "^2.0.2",
+    "lodash.filter": "^4.6.0",
+    "moment-timezone": "^0.5.13",
+    "num-sort": "^1.0.0",
+    "round-to": "^2.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "build": "browserify index.js > bundle.js"
+  },
+  "engines": {
+    "node": ">=6"
+  },
+  "license": "MIT"
+}
