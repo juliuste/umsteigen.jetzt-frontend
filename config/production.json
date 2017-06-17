@@ -1,0 +1,8 @@
+{
+	"hostname":      "umsteigen.jetzt",
+	"port":          443,
+	"httpPort":		 80,
+	"key":           "/etc/letsencrypt/live/umsteigen.jetzt/privkey.pem",
+	"cert":          "/etc/letsencrypt/live/umsteigen.jetzt/fullchain.pem",
+	"ca":            "/etc/letsencrypt/live/umsteigen.jetzt/chain.pem"
+}
