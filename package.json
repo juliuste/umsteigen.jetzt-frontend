@@ -14,16 +14,24 @@
   "dependencies": {
     "browserify": "^14.3.0",
     "clone": "^2.1.1",
+    "compression": "^1.6.2",
+    "config": "^1.26.1",
+    "express": "^4.15.2",
+    "express-force-ssl": "^0.3.2",
+    "fetch-ponyfill": "^4.0.0",
     "horsey": "^3.0.0",
     "hyperscript": "^2.0.2",
     "lodash.filter": "^4.6.0",
     "moment-timezone": "^0.5.13",
+    "nocache": "^2.0.0",
     "num-sort": "^1.0.0",
-    "round-to": "^2.0.0"
+    "path": "^0.12.7",
+    "round-to": "^2.0.0",
+    "spdy": "^3.4.4"
   },
   "devDependencies": {},
   "scripts": {
-    "build": "browserify index.js > bundle.js"
+    "build": "browserify content/index.js > content/bundle.js"
   },
   "engines": {
     "node": ">=6"
