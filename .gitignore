@@ -6,3 +6,6 @@ bundle.js
 .nvm-version
 node_modules
 npm-debug.log
+
+config/*
+!config/default.json
