@@ -270,6 +270,7 @@ const start = () => {
 	document.querySelector('#page3').style.display='none'
 	document.querySelector('#loaderBox').style.display='initial'
 	document.querySelector('#toResults').style.display='none'
+	document.querySelector('#lever').checked=false
 	const ids = Array.from(document.querySelectorAll('.route:not(#lastRoute)')).map((e) => e.getAttribute('id'))
 	const params = ids.map(checkParams)
 	if(params.some((p) => !p)){
