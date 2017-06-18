@@ -49,6 +49,9 @@ h1{
 	font-size: 1.5em;
 	line-height: 1.4em;
 }
+#description i{
+	font-style: italic;
+}
 
 #list{
 	margin-left: 23vw;
