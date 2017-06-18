@@ -31,7 +31,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "build": "browserify content/index.js > content/bundle.js"
+    "build": "browserify content/index.js > content/bundle.js",
+    "start": "npm run build && clear; node index"
   },
   "engines": {
     "node": ">=6"

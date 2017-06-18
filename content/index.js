@@ -4,6 +4,8 @@ const api = {
 	url: 'https://transport.rest/locations',
 	adapter: (res) => res.map((e) => e.name)
 }
+
+const h = require('hyperscript')
 const autocomplete = require('horsey')
 const fetch = require('fetch-ponyfill')().fetch
 const querystring = require('querystring').stringify
@@ -12,37 +14,39 @@ const clone = require('clone')
 const roundTo = require('round-to')
 const numSort = require('num-sort')
 
+const random = () => Math.round(Math.random()*10000000)
 const round = (e) => roundTo(e, 2)
 const toGermanNo = (e) => (e+'').split('.').join(',')
 
-autocomplete(document.querySelector('#origin'), {
-	suggestions: (value, done) => {
-		fetch(api.url+'?'+querystring({query: value}), {
-			method: "get",
-			mode: "cors"
-		}).then((r) => r.json()).then(api.adapter).then((res) => done(res))
-	},
-	limit: 5,
-	appendTo: document.querySelector('#originContainer'),
-	autoHideOnClick: true,
-	autoHideOnBlur: true
-})
+const addAutocomplete = (routeID) => {
+	autocomplete(document.querySelector('#'+routeID+' .origin'), {
+		suggestions: (value, done) => {
+			fetch(api.url+'?'+querystring({query: value}), {
+				method: "get",
+				mode: "cors"
+			}).then((r) => r.json()).then(api.adapter).then((res) => done(res))
+		},
+		limit: 5,
+		appendTo: document.querySelector('#'+routeID+' .originContainer'),
+		autoHideOnClick: true,
+		autoHideOnBlur: true
+	})
 
-autocomplete(document.querySelector('#destination'), {
-	suggestions: (value, done) => {
-		fetch(api.url+'?'+querystring({query: value}), {
-			method: "get",
-			mode: "cors"
-		}).then((r) => r.json()).then(api.adapter).then((res) => done(res))
-	},
-	limit: 5,
-	appendTo: document.querySelector('#destinationContainer'),
-	autoHideOnClick: true,
-	autoHideOnBlur: true
-})
+	autocomplete(document.querySelector('#'+routeID+' .destination'), {
+		suggestions: (value, done) => {
+			fetch(api.url+'?'+querystring({query: value}), {
+				method: "get",
+				mode: "cors"
+			}).then((r) => r.json()).then(api.adapter).then((res) => done(res))
+		},
+		limit: 5,
+		appendTo: document.querySelector('#'+routeID+' .destinationContainer'),
+		autoHideOnClick: true,
+		autoHideOnBlur: true
+	})
+}
 
-document.querySelector('#origin').addEventListener('horsey-selected', () => document.querySelector('#destination').focus())
-document.querySelector('#destination').addEventListener('horsey-selected', () => document.querySelector('#los').focus())
+addAutocomplete('r0')
 
 const countDays = (d) => {
 	let c = 0
@@ -52,19 +56,19 @@ const countDays = (d) => {
 	return c
 }
 
-const checkParams = () => {
-	const origin = document.querySelector('#origin').value
-	const destination = document.querySelector('#destination').value
-	const time = document.querySelector('#time').value
-	const abAn = document.querySelector('input[name="ab-an"]:checked').value
+const checkParams = (id) => {
+	const origin = document.querySelector('#'+id).querySelector('.origin').value
+	const destination = document.querySelector('#'+id).querySelector('.destination').value
+	const time = document.querySelector('#'+id).querySelector('.time').value
+	const abAn = document.querySelector('#'+id).querySelector('input[name="ab-an-'+id+'"]:checked').value
 	const days = {
-		mo: document.querySelector('#mo').checked,
-		di: document.querySelector('#di').checked,
-		mi: document.querySelector('#mi').checked,
-		do: document.querySelector('#do').checked,
-		fr: document.querySelector('#fr').checked,
-		sa: document.querySelector('#sa').checked,
-		so: document.querySelector('#so').checked
+		mo: document.querySelector('#'+id).querySelector('#mo-'+id).checked,
+		di: document.querySelector('#'+id).querySelector('#di-'+id).checked,
+		mi: document.querySelector('#'+id).querySelector('#mi-'+id).checked,
+		do: document.querySelector('#'+id).querySelector('#do-'+id).checked,
+		fr: document.querySelector('#'+id).querySelector('#fr-'+id).checked,
+		sa: document.querySelector('#'+id).querySelector('#sa-'+id).checked,
+		so: document.querySelector('#'+id).querySelector('#so-'+id).checked
 	}
 	if(
 		!origin
@@ -83,8 +87,8 @@ const checkParams = () => {
 	})
 }
 
-const formatParams = (p) => {
-	return Promise.all([
+const formatParams = (params) => {
+	return Promise.all(params.map((p) => Promise.all([
 		fetch(api.url+'?'+querystring({query: p.origin}), {
 			method: "get",
 			mode: "cors"
@@ -115,6 +119,11 @@ const formatParams = (p) => {
 			result.push(res)
 		}
 		return result
+	})))
+	.then((r) => {
+		const res = [].concat(...r)
+		console.log(res);
+		return res
 	})
 	.then((req) =>
 		fetch('https://api.umsteigen.jetzt/', {
@@ -139,7 +148,19 @@ const units = {
 	'calories': ' kcal',
 	'greenhouse': ' kg',
 	'price': ' €',
-	'risk': ' ‰ / a'
+	'risk': ' ‰'
+}
+
+const scaleData = (d) => {
+	const e = clone(d)
+	for(let type in e){
+		e[type]['duration'] *= (340/7)
+		e[type]['greenhouse'] *= (340/7)
+		e[type]['calories'] *= (340/7)
+		e[type]['price'] *= (340/7)
+		e[type]['risk'] *= (340/7)
+	}
+	return e
 }
 
 const formatData = (d) => {
@@ -177,6 +198,7 @@ const getExtrema = (d) => {
 
 const enterData = (d) => {
 	clearTable()
+	d = scaleData(d)
 	d = formatData(d)
 	const extr = getExtrema(d)
 	for(let type in d){
@@ -196,88 +218,119 @@ const enterData = (d) => {
 }
 
 const start = () => {
-	document.querySelector('#page2').style.display='none'
-	const params = checkParams()
-	if(!params){
+	document.querySelector('#page3').style.display='none'
+	const ids = Array.from(document.querySelectorAll('.route:not(#lastRoute)')).map((e) => e.getAttribute('id'))
+	const params = ids.map(checkParams)
+	if(params.some((p) => !p)){
 		document.querySelector('#error').innerHTML = 'Bitte füllen Sie alle Felder aus.'
 	}
 	else{
 		document.querySelector('#error').innerHTML = '&nbsp;'
+		document.querySelector('#page2').style.display='flex'
+		document.querySelector('#page2').scrollIntoView({
+			behavior: 'smooth'
+		})
 
 		formatParams(params)
 		.then(enterData)
 		.then(() => {
-			document.querySelector('#page2').style.display='flex'
-			document.querySelector('#page2').scrollIntoView({
-  				behavior: 'smooth'
-			})
+			document.querySelector('#page3').style.display='flex'
+			document.querySelector('#loaderBox').style.display='none'
+			document.querySelector('#toResults').style.display='initial'
+			// document.querySelector('#page3').scrollIntoView({
+  	// 			behavior: 'smooth'
+			// })
 		})
 		.catch(() => {
+			document.querySelector('#page3').style.display='none'
+			document.querySelector('#page').scrollIntoView({
+				behavior: 'smooth'
+			})
 			document.querySelector('#page2').style.display='none'
+			document.querySelector('#loaderBox').style.display='initial'
+			document.querySelector('#toResults').style.display='none'
 			document.querySelector('#error').innerHTML = 'Bitte füllen Sie alle Felder aus.'
 		})
 	}
 }
 
 document.querySelector('#los').addEventListener('click', start)
-// const h = require('hyperscript')
 
-// const generateRoute = () =>
-// 	h('div.route',
-// 		h('div.inputGroup',
-// 			h('input.origin', {type: 'text', placeholder: 'Start'}),
-// 			h('input.destination', {type: 'text', placeholder: 'Ziel'})
-// 		),
-// 		h('div.inputGroup',
-// 			h('label',
-// 				h('input.an-ab', {type: 'radio', value: 'an', selected: true}),
-// 				h('span', 'An')
-// 			),
-// 			h('label',
-// 				h('input.an-ab', {type: 'radio', value: 'ab'}),
-// 				h('span', 'Ab')
-// 			)
-// 		),
-// 		h('div.inputGroup',
-// 			h('label',
-// 				h('input.day', {type: 'checkbox'}),
-// 				h('span', 'Mo')
-// 			),
-// 			h('label',
-// 				h('input.day', {type: 'checkbox'}),
-// 				h('span', 'Di')
-// 			),
-// 			h('label',
-// 				h('input.day', {type: 'checkbox'}),
-// 				h('span', 'Mi')
-// 			),
-// 			h('label',
-// 				h('input.day', {type: 'checkbox'}),
-// 				h('span', 'Do')
-// 			),
-// 			h('label',
-// 				h('input.day', {type: 'checkbox'}),
-// 				h('span', 'Fr')
-// 			),
-// 			h('label',
-// 				h('input.day', {type: 'checkbox'}),
-// 				h('span', 'Sa')
-// 			),
-// 			h('label',
-// 				h('input.day', {type: 'checkbox'}),
-// 				h('span', 'So')
-// 			)
-// 		),
-// 		h('div.inputGroup',
-// 			h('a#addRoute', {href: '#'}, '❌')
-// 		)
-// 	)
+document.querySelector('body').addEventListener('click', (ev) => {
+	const element = ev.target
+	if(element.getAttribute('class') === 'removeRoute')
+		removeRoute(element)
+	if(element.getAttribute('id') === 'addRoute')
+		addRoute()
+})
 
-// const addRoute = () => document.getElementById('routes').appendChild(generateRoute())
+document.querySelector('#toResults').addEventListener('click', (ev) => {
+	document.querySelector('#page3').scrollIntoView({
+			behavior: 'smooth'
+	})
+})
 
-// const removeRoute = (el) => el.parentElement.parentElement.remove()
+const generateRoute = (id) =>
+	h('div.route', {id},
+		h('div.inputGroup',
+			h('div.originContainer.placeContainer',
+				h('input.text.origin', {type: 'text', placeholder: 'Start'})
+			),
+			' ',
+			h('div.destinationContainer.placeContainer',
+				h('input.text.destination', {type: 'text', placeholder: 'Ziel'})
+			)
+		),
+		h('div.inputGroup.timeGroup',
+			h('div.timeDir',
+				h('input', {id: 'ab-'+id, value: 'ab', type: 'radio', name: 'ab-an-'+id}),
+				h('label', {htmlFor: 'ab-'+id}, 'Ab'),
+				' ',
+				h('input', {id: 'an-'+id, value: 'an', type: 'radio', name: 'ab-an-'+id, checked: 'true'}),
+				h('label', {htmlFor: 'an-'+id}, 'An')
+			),
+			h('input.text.time', {type: 'text', placeholder: '08:00'})
+		),
+		h('div.inputGroup',
+			h('div.days',
+				h('input.mo.day', {id: 'mo-'+id, name: 'day-'+id, type: 'checkbox'}),
+				h('label', {htmlFor: 'mo-'+id}, 'Mo'),
+				' ',
+				h('input.di.day', {id: 'di-'+id, name: 'day-'+id, type: 'checkbox'}),
+				h('label', {htmlFor: 'di-'+id}, 'Di'),
+				' ',
+				h('input.mi.day', {id: 'mi-'+id, name: 'day-'+id, type: 'checkbox'}),
+				h('label', {htmlFor: 'mi-'+id}, 'Mi'),
+				' ',
+				h('input.do.day', {id: 'do-'+id, name: 'day-'+id, type: 'checkbox'}),
+				h('label', {htmlFor: 'do-'+id}, 'Do'),
+				' ',
+				h('input.fr.day', {id: 'fr-'+id, name: 'day-'+id, type: 'checkbox'}),
+				h('label', {htmlFor: 'fr-'+id}, 'Fr'),
+				' ',
+				h('input.sa.day', {id: 'sa-'+id, name: 'day-'+id, type: 'checkbox'}),
+				h('label', {htmlFor: 'sa-'+id}, 'Sa'),
+				' ',
+				h('input.so.day', {id: 'so-'+id, name: 'day-'+id, type: 'checkbox'}),
+				h('label', {htmlFor: 'so-'+id}, 'So')
+			)
+		),
+		h('div.inputGroup',
+			h('a.removeRoute', {href: '#'}, '❌')
+		)
+	)
+
+const addRoute = () => {
+	const rID = 'r'+random()
+	document.getElementById('routes').insertBefore(generateRoute(rID), document.querySelector('#lastRoute'))
+	addAutocomplete(rID)
+	document.querySelector('#'+rID+' .origin').addEventListener('horsey-selected', () => {
+		document.querySelector('#'+rID+' .destination').focus()
+	})
+}
+
+const removeRoute = (el) => el.parentElement.parentElement.remove()
 
 // Array.from(document.getElementsByClassName('removeRoute')).map((e) => e.addEventListener('click', (el) => removeRoute(el.target)))
 
 // document.getElementById('addRoute').addEventListener('click', addRoute)
-
