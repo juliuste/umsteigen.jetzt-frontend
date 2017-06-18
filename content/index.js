@@ -154,11 +154,11 @@ const units = {
 const scaleData = (d) => {
 	const e = clone(d)
 	for(let type in e){
-		e[type]['duration'] *= (340/7)
-		e[type]['greenhouse'] *= (340/7)
-		e[type]['calories'] *= (340/7)
-		e[type]['price'] *= (340/7)
-		e[type]['risk'] *= (340/7)
+		e[type]['duration'] *= 48
+		e[type]['greenhouse'] *= 48
+		e[type]['calories'] *= 48
+		e[type]['price'] *= 48
+		e[type]['risk'] *= 48
 	}
 	return e
 }
