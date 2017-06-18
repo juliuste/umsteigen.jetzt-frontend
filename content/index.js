@@ -17,7 +17,7 @@ const numberFormatter = require('number-formatter')
 
 const random = () => Math.round(Math.random()*10000000)
 const round = (e) => roundTo(e, 2)
-const roundCal = (e) => Math.round(e/1000)*1000
+const roundCal = (e) => Math.round(e) //Math.round(e/1000)*1000
 // const toGermanNo = (e) => (e+'').split('.').join(',')
 const toGermanNo = (e) => numberFormatter('#.##0,##', e)
 const toGermanNo2 = (e) => ((e>0) ? '+ ' : ((e===0) ? '± ' : '- ')) + numberFormatter('#.##0,##', Math.abs(e))
@@ -149,7 +149,7 @@ const clearTable = () => {
 
 const units = {
 	'duration': ' h',
-	'calories': ' kcal',
+	'calories': ' kcal tägl.',
 	'greenhouse': ' kg',
 	'price': ' €',
 	'risk': ' ‰'
@@ -160,7 +160,7 @@ const scaleData = (d) => {
 	for(let type in e){
 		e[type]['duration'] *= 48
 		e[type]['greenhouse'] *= 48
-		e[type]['calories'] *= 48
+		e[type]['calories'] /= 7
 		e[type]['price'] *= 48
 		e[type]['risk'] *= 48
 	}
