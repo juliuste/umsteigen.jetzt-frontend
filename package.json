@@ -25,6 +25,7 @@
     "moment-timezone": "^0.5.13",
     "nocache": "^2.0.0",
     "num-sort": "^1.0.0",
+    "number-formatter": "^1.2.0",
     "path": "^0.12.7",
     "round-to": "^2.0.0",
     "spdy": "^3.4.4"

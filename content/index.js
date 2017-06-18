@@ -13,10 +13,14 @@ const moment = require('moment-timezone')
 const clone = require('clone')
 const roundTo = require('round-to')
 const numSort = require('num-sort')
+const numberFormatter = require('number-formatter')
 
 const random = () => Math.round(Math.random()*10000000)
 const round = (e) => roundTo(e, 2)
-const toGermanNo = (e) => (e+'').split('.').join(',')
+const roundCal = (e) => Math.round(e/1000)*1000
+// const toGermanNo = (e) => (e+'').split('.').join(',')
+const toGermanNo = (e) => numberFormatter('#.##0,##', e)
+const toGermanNo2 = (e) => ((e>0) ? '+ ' : ((e===0) ? '± ' : '- ')) + numberFormatter('#.##0,##', Math.abs(e))
 
 const addAutocomplete = (routeID) => {
 	autocomplete(document.querySelector('#'+routeID+' .origin'), {
@@ -168,7 +172,7 @@ const formatData = (d) => {
 	for(let type in e){
 		e[type]['duration'] = Math.round(e[type]['duration'] / (1000 * 60 * 60))
 		e[type]['greenhouse'] = round(e[type]['greenhouse']/1000)
-		e[type]['calories'] = Math.round(e[type]['calories'])
+		e[type]['calories'] = roundCal(e[type]['calories'])
 		e[type]['price'] = Math.round(e[type]['price'])
 		e[type]['risk'] = round(e[type]['risk'])
 	}
@@ -196,7 +200,22 @@ const getExtrema = (d) => {
 	return values
 }
 
+const compareData = (d) => {
+	const e = clone(d)
+	for(let type in e){
+		for(let column in d[type]){
+			e[type][column] = d[type][column] - d['car'][column]
+		}
+	}
+	return e
+}
+
 const enterData = (d) => {
+	const f = clone(d)
+	const oldLever = document.querySelector('#lever')
+	const newLever = oldLever.cloneNode(true)
+	oldLever.parentNode.replaceChild(newLever, oldLever)
+
 	clearTable()
 	d = scaleData(d)
 	d = formatData(d)
@@ -215,10 +234,42 @@ const enterData = (d) => {
 			document.querySelector(`#${type}-${column}`).innerHTML = toGermanNo(d[type][column])+units[column]
 		}
 	}
+	document.querySelector('#lever').addEventListener('change', (ev) => {
+		if(ev.target.checked){
+			enterComparedData(f)
+		}
+		else{
+			enterData(f)
+		}
+	})
+}
+
+const enterComparedData = (d) => {
+	clearTable()
+	d = scaleData(d)
+	d = compareData(d)
+	d = formatData(d)
+	for(let type in d){
+		for(let column in d[type]){
+			if(column === 'calories'){
+				if(d[type][column] < 0) document.querySelector(`#${type}-${column}`).setAttribute('class', 'entry less '+type)
+				else if(d[type][column] === 0) document.querySelector(`#${type}-${column}`).setAttribute('class', 'entry equal '+type)
+				else document.querySelector(`#${type}-${column}`).setAttribute('class', 'entry more '+type)
+			}
+			else{
+				if(d[type][column] > 0) document.querySelector(`#${type}-${column}`).setAttribute('class', 'entry less '+type)
+				else if(d[type][column] === 0) document.querySelector(`#${type}-${column}`).setAttribute('class', 'entry equal '+type)
+				else document.querySelector(`#${type}-${column}`).setAttribute('class', 'entry more '+type)
+			}
+			document.querySelector(`#${type}-${column}`).innerHTML = toGermanNo2(d[type][column])+units[column]
+		}
+	}
 }
 
 const start = () => {
 	document.querySelector('#page3').style.display='none'
+	document.querySelector('#loaderBox').style.display='initial'
+	document.querySelector('#toResults').style.display='none'
 	const ids = Array.from(document.querySelectorAll('.route:not(#lastRoute)')).map((e) => e.getAttribute('id'))
 	const params = ids.map(checkParams)
 	if(params.some((p) => !p)){
