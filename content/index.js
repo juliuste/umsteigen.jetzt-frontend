@@ -1,7 +1,7 @@
 'use strict'
 
 const api = {
-	url: 'https://transport.rest/locations',
+	url: 'https://vbb.transport.rest/locations',
 	adapter: (res) => res.map((e) => e.name)
 }
 
@@ -105,12 +105,12 @@ const formatParams = (params) => {
 	.then(([o, d]) => [o[0], d[0]])
 	.then(([o, d]) => ({
 		origin: {
-			latitude: o.latitude,
-			longitude: o.longitude
+			latitude: o.coordinates.latitude,
+			longitude: o.coordinates.longitude
 		},
 		destination: {
-			latitude: d.latitude,
-			longitude: d.longitude
+			latitude: d.coordinates.latitude,
+			longitude: d.coordinates.longitude
 		},
 		time: {
 			type: (p.abAn === 'ab') ? 'departure' : 'arrival',
@@ -126,7 +126,6 @@ const formatParams = (params) => {
 	})))
 	.then((r) => {
 		const res = [].concat(...r)
-		console.log(res);
 		return res
 	})
 	.then((req) =>
