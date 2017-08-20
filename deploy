@@ -2,14 +2,10 @@
 
 rsync -rav --delete \
 	--exclude '.*' \
-	--exclude node_modules \
-	. 'umsteigen.jetzt-frontend:~/umsteigen.jetzt-frontend/'
+	. 'enceladus:~/var/www/umsteigen.jetzt-frontend/'
 
-ssh umsteigen.jetzt-frontend "\
-cd ~/umsteigen.jetzt-frontend
+ssh enceladus "\
+cd ~/var/www/umsteigen.jetzt-frontend
 npm i
 npm update
-forever stop umsteigen.jetzt-frontend
-npm run build
-export NODE_ENV=production
-forever start -a --uid umsteigen.jetzt-frontend index.js"
+npm run build"

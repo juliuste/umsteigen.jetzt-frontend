@@ -1,7 +1,7 @@
 {
   "name": "umsteigen.jetzt-frontend",
   "description": "",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "keywords": [],
   "author": "Julius Tens <mail@juliustens.de>",
   "homepage": "https://github.com/juliuste/umsteigen.jetzt-frontend",
@@ -14,25 +14,19 @@
   "dependencies": {
     "browserify": "^14.3.0",
     "clone": "^2.1.1",
-    "compression": "^1.6.2",
-    "config": "^1.26.1",
-    "express": "^4.15.2",
-    "express-force-ssl": "^0.3.2",
     "fetch-ponyfill": "^4.0.0",
     "horsey": "^3.0.0",
     "hyperscript": "^2.0.2",
     "lodash.filter": "^4.6.0",
     "moment-timezone": "^0.5.13",
-    "nocache": "^2.0.0",
     "num-sort": "^1.0.0",
     "number-formatter": "^1.2.0",
     "path": "^0.12.7",
     "round-to": "^2.0.0",
-    "spdy": "^3.4.4"
   },
   "devDependencies": {},
   "scripts": {
-    "build": "browserify content/index.js > content/bundle.js",
+    "build": "browserify index.js > bundle.js",
     "start": "npm run build && clear; node index"
   },
   "engines": {
