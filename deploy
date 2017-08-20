@@ -2,10 +2,10 @@
 
 rsync -rav --delete \
 	--exclude '.*' \
-	. 'enceladus:~/var/www/umsteigen.jetzt-frontend/'
+	. 'enceladus:/var/www/umsteigen.jetzt-frontend/'
 
 ssh enceladus "\
-cd ~/var/www/umsteigen.jetzt-frontend
+cd /var/www/umsteigen.jetzt-frontend
 npm i
 npm update
 npm run build"
