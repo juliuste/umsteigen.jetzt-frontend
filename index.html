@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Umsteigen… jetzt!</title>
+		<link rel="stylesheet" type="text/css" href="./assets/reset.css">
+		<link rel="stylesheet" type="text/css" href="./assets/main.css">
+		<link rel="stylesheet" type="text/css" href="./assets/autocomplete.css">
+	</head>
+	<body>
+		<div id="page">
+			<div id="header">
+				<h1>Wat is besser?</h1>
+				<span id="error">&nbsp;</span>
+				<span id="intro">Vergleichen Sie Preis, Dauer, Umweltbelastung und weitere Faktoren von Auto, Fahrrad und öffentlichem Nahverkehr ganz konkret für Ihre wöchentlichen Wege.</span>
+			</div>
+			<div id="main">
+			<div id="routes">
+				<div id="r0" class="route">
+					<div class="inputGroup">
+						<div class="originContainer placeContainer">
+							<input type="text" class="text origin" placeholder="Start">
+						</div>
+						<div class="destinationContainer placeContainer">
+							<input type="text" class="text destination" placeholder="Ziel">
+						</div>
+					</div>
+					<div class="inputGroup timeGroup">
+						<div class="timeDir">
+							<input value="ab" type="radio" id="ab-r0" name="ab-an-r0"><label for="ab-r0">Ab</label>
+							<input value="an" type="radio" id="an-r0" name="ab-an-r0" checked><label for="an-r0">An</label>
+						</div>
+						<input type="text" class="text time" placeholder="08:00">
+					</div>
+					<div class="inputGroup">
+						<div class="days">
+							<input id="mo-r0" name="day-r0" type="checkbox" class="mo day">
+							<label for="mo-r0">Mo</label>
+							<input id="di-r0" name="day-r0" type="checkbox" class="di day">
+							<label for="di-r0">Di</label>
+							<input id="mi-r0" name="day-r0" type="checkbox" class="mi day">
+							<label for="mi-r0">Mi</label>
+							<input id="do-r0" name="day-r0" type="checkbox" class="do day">
+							<label for="do-r0">Do</label>
+							<input id="fr-r0" name="day-r0" type="checkbox" class="fr day">
+							<label for="fr-r0">Fr</label>
+							<input id="sa-r0" name="day-r0" type="checkbox" class="sa day">
+							<label for="sa-r0">Sa</label>
+							<input id="so-r0" name="day-r0" type="checkbox" class="so day">
+							<label for="so-r0">So</label>
+						</div>
+					</div>
+					<div class="inputGroup">
+						<a class="removeRoute" href="#">❌</a>
+					</div>
+				</div>
+				<div class="route" id="lastRoute">
+					<div class="inputGroup">
+						<button class="button" id="addRoute">+ weitere Route</button>
+						<button class="button" id="los">→ Auswertung</button>
+					</div>
+				</div>
+			</div>
+			</div>
+			<!-- <a id="addRoute" href="#">Add another route…</a> -->
+		</div>
+		<div id="page2">
+			<div id="header2"><h1>Hinweise</h1></div>
+			<div id="description">
+				<p>Der Preis für das 🚗 Auto beinhaltet <i>nicht</i> die Autoversicherung. Sie <b>müssten Ihr Auto also nicht abschaffen</b>, um den ggf. beim ÖPNV oder Fahrrad entstehenden Preisvorteil zu nutzen. Dieses Werkzeug soll gerade zeigen, dass sich in vielen Fällen eine VBB-Jahreskarte oder ein Fahrrad zusätzlich zum Auto durchaus lohnen können:</p>
+				<!-- <p>Für 🕐 <b>kürzere Arbeitswege</b>, 🚦 <b>weniger Stress</b> im Stau, 💰 <b>mehr Geld</b> am Ende des Monats und eine 🌍 <b>gesündere Umwelt</b>.</p> -->
+			</div>
+			<ul id="list">
+				<li>🕐 kürzere Arbeitswege</li>
+				<li>🚦 weniger Stress im Stau</li>
+				<li>💰 mehr Geld am Monatsende</li>
+				<li>🌍 eine gesündere Umwelt</li>
+			</ul>
+			<div id="buttonBox">
+				<div id="loaderBox"><div id="loader" class="loader"></div></div>
+				<button id="toResults" class="clickable">↓ zu den Ergebnissen</button>
+			</div>
+		</div>
+		<div id="page3">
+			<div id="header3"><h1>Ergebnisse</h1></div>
+			<div id="results">
+				<table>
+					<thead>
+						<tr>
+							<th></th>
+							<th class="heading">🚗 Auto</th>
+							<th class="heading">🚃 ÖPNV</th>
+							<th class="heading">🚲 Fahrrad</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="description"><span class="symbol">🕐</span> Zeit</td>
+							<td id="car-duration" class="entry"></td>
+							<td id="pt-duration" class="entry"></td>
+							<td id="bike-duration" class="entry"></td>
+						</tr>
+						<tr>
+							<td class="description"><span class="symbol">☁</span> CO₂</td>
+							<td id="car-greenhouse" class="entry"></td>
+							<td id="pt-greenhouse" class="entry"></td>
+							<td id="bike-greenhouse" class="entry"></td>
+						</tr>
+						<tr>
+							<td class="description"><span class="symbol">🍔</span> Kalorien</td>
+							<td id="car-calories" class="entry"></td>
+							<td id="pt-calories" class="entry"></td>
+							<td id="bike-calories" class="entry"></td>
+						</tr>
+						<tr>
+							<td class="description"><span class="symbol">💰</span> Preis</td>
+							<td id="car-price" class="entry"></td>
+							<td id="pt-price" class="entry"></td>
+							<td id="bike-price" class="entry"></td>
+						</tr>
+						<tr>
+							<td class="description"><span class="symbol">🚑</span> Risiko</td>
+							<td id="car-risk" class="entry"></td>
+							<td id="pt-risk" class="entry"></td>
+							<td id="bike-risk" class="entry"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div id="info">
+				<p>Alle Angaben beziehen sich auf ein Kalenderjahr mit 48 Arbeitswochen.</p>
+			</div>
+			<div id="switch">
+				<label class="switch">
+				<input id="lever" type="checkbox">
+				<div class="slider round"></div>
+				</label>
+				<span>Vergleich zum Auto</span>
+			</div>
+		</div>
+		<script type="text/javascript" src="./bundle.js"></script>
+	</body>
+</html>
