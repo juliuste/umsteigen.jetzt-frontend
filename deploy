@@ -2,6 +2,7 @@
 
 rsync -rav --delete \
 	--exclude '.*' \
+	--exclude 'node_modules' \
 	. 'enceladus:/var/www/umsteigen.jetzt-frontend/'
 
 ssh enceladus "\
