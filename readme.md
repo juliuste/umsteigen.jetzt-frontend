@@ -1,6 +1,6 @@
 # umsteigen.jetzt-frontend
 
-[umsteigen.jetzt](https://umsteigen.jetzt) is an open source platform aiming to provide a simple comparison between car, public transport, bicycle and *hybrid (bike+public transport, not yet implemented)* to daily commuters in the Berlin-Brandenburg area. It offers specific data on emissions, time, cost, risk of accidents and burned calories for each mean of transportation.
+[umsteigen.jetzt](https://umsteigen.jetzt) (German for "change now") is an open source platform aiming to provide a simple comparison between car, public transport, bicycle and *hybrid (bike+public transport, not yet implemented)* to daily commuters in the Berlin-Brandenburg area. It offers specific data on emissions, time, cost, risk of accidents and burned calories for each mean of transportation.
 
 This project is still under active developement and not ready for production yet. If you want to adapt it for your city/region or add another language (currently everything is in German), feel free to do so, I'd really much appreciate it!
 
