@@ -1,6 +1,10 @@
 # umsteigen.jetzt-frontend
 
-Built at [DB Hackathon](https://www.mindboxberlin.com/index.php/db-hackathon-may-2017.html). This is the worst code I've ever written. Pls don't judge me and give me a few days to fix this disgrace.
+[umsteigen.jetzt](https://umsteigen,jetzt) is a open source platform aiming to provide a simple comparison between car, public transport, bicycle and *hybrid (bike+public transport, not yet implemented)* to daily commuters in the Berlin-Brandenburg area. It offers specific data on emissions, time, cost, risk of accidents and burned calories for each mean of transportation.
+
+This project is still under active developement and not ready for production yet. If you want to adapt it for your city/region or add another language (currently only German), feel free to do so, I'd really much appreciate it!
+
+Just nothe that this was initially built at [DB Hackathon](https://www.mindboxberlin.com/index.php/db-hackathon-may-2017.html) and [Hack your city](http://www.hackyourcity.de/). Therefore, this is the worst code - especially the layout - I've ever written. Pls don't judge me and give me a few more weeks to fix this disgrace.
 
 [![npm version](https://img.shields.io/npm/v/umsteigen.jetzt-frontend.svg)](https://www.npmjs.com/package/umsteigen.jetzt-frontend)
 [![Build Status](https://travis-ci.org/juliuste/umsteigen.jetzt-frontend.svg?branch=master)](https://travis-ci.org/juliuste/umsteigen.jetzt-frontend)
