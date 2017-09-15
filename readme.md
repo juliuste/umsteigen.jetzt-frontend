@@ -6,8 +6,6 @@ This project is still under active developement and not ready for production yet
 
 Just nothe that this was initially built at [DB Hackathon](https://www.mindboxberlin.com/index.php/db-hackathon-may-2017.html) and [Hack your city](http://www.hackyourcity.de/). Therefore, this is the worst code - especially the layout - I've ever written. Pls don't judge me and give me a few more weeks to fix this disgrace.
 
-[![npm version](https://img.shields.io/npm/v/umsteigen.jetzt-frontend.svg)](https://www.npmjs.com/package/umsteigen.jetzt-frontend)
-[![Build Status](https://travis-ci.org/juliuste/umsteigen.jetzt-frontend.svg?branch=master)](https://travis-ci.org/juliuste/umsteigen.jetzt-frontend)
 [![dependency status](https://img.shields.io/david/juliuste/umsteigen.jetzt-frontend.svg)](https://david-dm.org/juliuste/umsteigen.jetzt-frontend)
 [![dev dependency status](https://img.shields.io/david/dev/juliuste/umsteigen.jetzt-frontend.svg)](https://david-dm.org/juliuste/umsteigen.jetzt-frontend#info=devDependencies)
 [![license](https://img.shields.io/github/license/juliuste/umsteigen.jetzt-frontend.svg?style=flat)](LICENSE)
