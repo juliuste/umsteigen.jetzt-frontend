@@ -1,7 +1,7 @@
 'use strict'
 
 const api = {
-	url: 'https://vbb.transport.rest/locations',
+	url: 'https://1.bvg.transport.rest/locations',
 	adapter: (res) => res.map((e) => e.name)
 }
 
