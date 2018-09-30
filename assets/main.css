@@ -183,6 +183,7 @@ th.heading{
 	flex-direction: row;
 	justify-content: center;
 	align-items: center;
+	flex-wrap: wrap;
 	margin-bottom: 1em;
 }
 
@@ -233,6 +234,7 @@ th.heading{
 	display: inline-block;
 	width: 16em;
 	margin-right: 1em;
+	margin-bottom: .2em;
 }
 
 .symbol{
@@ -306,7 +308,8 @@ th.heading{
 }
 
 .inputGroup{
-	margin: 0 .3em;
+	text-align: center;
+	margin: .3em;
 }
 
 /* weekday switch */
